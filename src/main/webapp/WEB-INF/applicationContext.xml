@@ -29,9 +29,9 @@
 	
 	
 	<!-- Scan for all of Spring components such as Spring Service -->
-	<context:component-scan base-package="projecthibernate.spring.config,
-							  		 	  projecthibernate.service,
-							              projecthibernate.spring.controller,
+	<context:component-scan base-package="projectopenjpa.spring.config,
+							  		 	  projectopenjpa.service,
+							              projectopenjpa.spring.controller,
 							              bossanovadata.model.persistence.query" />
 	
 	
@@ -39,7 +39,7 @@
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	
 	<!-- Define EclipseLink JPA Vendor Adapter -->
-	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter">
 		<property name="generateDdl" value="false" />
 		<property name="showSql" value="true" />
 	</bean>
