@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:ldap="http://www.springframework.org/schema/ldap"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/ldap http://www.springframework.org/schema/ldap/spring-ldap.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+	<!-- Enable Spring Annotation Configuration -->
+	<context:annotation-config />
+
+	<context:spring-configured/>
+	
+	<mvc:annotation-driven  />
+	
+	<mvc:default-servlet-handler />
+
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+   		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+   		<property name="prefix" value="/WEB-INF/views/"/>
+   		<property name="suffix" value=".jsp"/>
+   </bean>
+
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	
+	<!-- Scan for all of Spring components such as Spring Service -->
+	<context:component-scan base-package="projecthibernate.spring.config,
+							  		 	  projecthibernate.service,
+							              projecthibernate.spring.controller,
+							              bossanovadata.model.persistence.query" />
+	
+	
+	<!-- Necessary to get the entity manager injected into the factory bean -->
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	
+	<!-- Define EclipseLink JPA Vendor Adapter -->
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="generateDdl" value="false" />
+		<property name="showSql" value="true" />
+	</bean>
+	
+
+	<bean id="transactionManagerBossaNova" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactoryBossaNova" />
+	</bean>	
+	
+	<bean id="entityManagerFactoryBossaNova" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="bossanovadata"/>		
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManagerBossaNova" />
+
+</beans>
